@@ -185,7 +185,7 @@ if __name__ == "__main__":
         print(f"ID Restoran: {item['id']}")
         print(f"Kualitas Servis: {item['kualitas_servis']} -> {servis_fuzzy}")
         print(f"Harga: Rp {item['harga']} -> {harga_fuzzy}")
-        print("\nHasil Inferensi (9 aturan):")
+        print("\nHasil Inferensi (5 aturan):")
         for idx, val in enumerate(item['aturan'], 1):
             print(f"Aturan {idx}: {val:.2f}")
         
