@@ -166,14 +166,9 @@ if __name__ == "__main__":
 
     hasil = []
     for d in data:
-        # Melakukan fuzzifikasi untuk kualitas servis dan harga
         servis_fuzzy = fuzzifikasi_servis(d['kualitas_servis'])
         harga_fuzzy = fuzzifikasi_harga(d['harga'])
-
-        # Inferensi berdasarkan aturan
         aturan = inferensi(servis_fuzzy, harga_fuzzy)
-
-        # Defuzzifikasi untuk menentukan skor kelayakan
         skor = defuzzifikasi(aturan)
 
         hasil.append({
@@ -181,7 +176,9 @@ if __name__ == "__main__":
             'kualitas_servis': d['kualitas_servis'],
             'harga': d['harga'],
             'skor': skor,
-            'aturan': aturan
+            'aturan': aturan,
+            'servis_fuzzy': servis_fuzzy,  # Simpan hasil fuzzifikasi
+            'harga_fuzzy': harga_fuzzy     # Simpan hasil fuzzifikasi
         })
 
     # Sortir hasil berdasarkan skor kelayakan tertinggi
@@ -198,15 +195,12 @@ if __name__ == "__main__":
     print("="*70)
     
     for i, item in enumerate(top_5, 1):
-        print(f"{i:<4} {item['id']:<8} {item['kualitas_servis']:<18} {item['harga']:<15} {item['skor']:<20.2f}")
-        
-        # Menampilkan tracing proses inferensi untuk setiap restoran
         print(f"\nDetail Proses Fuzzy Logic untuk Restoran ID {item['id']}:")
         print("="*70)
         print(f"ID Restoran: {item['id']}")
-        print(f"Kualitas Servis: {item['kualitas_servis']} -> {servis_fuzzy}")
-        print(f"Harga: Rp {item['harga']} -> {harga_fuzzy}")
-        print("\nHasil Inferensi (5 aturan):")
+        print(f"Kualitas Servis: {item['kualitas_servis']} -> {item['servis_fuzzy']}")
+        print(f"Harga: Rp {item['harga']} -> {item['harga_fuzzy']}")
+        print("\nHasil Inferensi (9 aturan):")  # Update ke 9 aturan
         for idx, val in enumerate(item['aturan'], 1):
             print(f"Aturan {idx}: {val:.2f}")
         
