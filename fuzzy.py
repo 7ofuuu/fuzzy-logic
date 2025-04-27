@@ -167,7 +167,7 @@ if __name__ == "__main__":
     hasil.sort(key=lambda x: x['skor'], reverse=True)
 
     # Ambil 3 restoran terbaik (top 3) untuk tracing aturan inferensi
-    top_3 = hasil[:3]
+    top_5 = hasil[:5]
 
     # Simpan hasil ke dalam file peringkat.xlsx
     simpan_output('peringkat.xlsx', hasil[:10])  # Simpan 10 restoran terbaik
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     print(f"{'No.':<4} {'ID':<8} {'Kualitas Servis':<18} {'Harga':<15} {'Skor Kelayakan':<20}")
     print("="*70)
     
-    for i, item in enumerate(top_3, 1):
+    for i, item in enumerate(top_, 1):
         print(f"{i:<4} {item['id']:<8} {item['kualitas_servis']:<18} {item['harga']:<15} {item['skor']:<20.2f}")
         
         # Menampilkan tracing proses inferensi untuk setiap restoran
