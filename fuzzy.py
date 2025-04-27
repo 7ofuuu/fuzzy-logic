@@ -121,17 +121,16 @@ def defuzzifikasi(aturan):
     """
     # Bobot untuk setiap aturan (sesuai dengan urutan aturan di atas)
     bobot_kelayakan = [
-        90,  # Aturan 1: Bagus & Murah → Layak Tinggi
-        70,  # Aturan 2: Bagus & Sedang → Layak Sedang
-        50,  # Aturan 3: Bagus & Mahal → Layak Rendah
-        70,  # Aturan 4: Sedang & Murah → Layak Sedang
-        60,  # Aturan 5: Sedang & Sedang → Layak Sedang
-        40,  # Aturan 6: Sedang & Mahal → Layak Rendah
-        50,  # Aturan 7: Buruk & Murah → Layak Rendah
-        30,  # Aturan 8: Buruk & Sedang → Layak Sangat Rendah
-        20   # Aturan 9: Buruk & Mahal → Layak Sangat Rendah
+        100,  # Aturan 1: Bagus & Murah → Layak Tinggi (diubah dari 90 ke 100)
+        75,   # Aturan 2: Bagus & Sedang → Layak Sedang
+        50,   # Aturan 3: Bagus & Mahal → Layak Rendah
+        75,   # Aturan 4: Sedang & Murah → Layak Sedang
+        60,   # Aturan 5: Sedang & Sedang → Layak Sedang
+        40,   # Aturan 6: Sedang & Mahal → Layak Rendah
+        50,   # Aturan 7: Buruk & Murah → Layak Rendah
+        30,   # Aturan 8: Buruk & Sedang → Layak Sangat Rendah
+        20    # Aturan 9: Buruk & Mahal → Layak Sangat Rendah
     ]
-
     # Hitung rata-rata terbobot
     pembilang = sum(a * b for a, b in zip(aturan, bobot_kelayakan))
     penyebut = sum(aturan)
