@@ -88,14 +88,24 @@ def inferensi(servis_fuzzy, harga_fuzzy):
     harga_fuzzy (dict): Hasil fuzzifikasi harga restoran.
     
     Returns:
-    list: Nilai kelayakan untuk setiap aturan yang diterapkan.
+    list: Nilai kelayakan untuk setiap aturan yang diterapkan (9 aturan).
     """
-    aturan = []
-    aturan.append(min(servis_fuzzy['Bagus'], harga_fuzzy['Murah']))  # Servis Bagus, Harga Murah => Layak Tinggi
-    aturan.append(min(servis_fuzzy['Sedang'], harga_fuzzy['Murah']))  # Servis Sedang, Harga Murah => Layak Sedang
-    aturan.append(min(servis_fuzzy['Bagus'], harga_fuzzy['Mahal']))   # Servis Bagus, Harga Mahal => Layak Sedang
-    aturan.append(min(servis_fuzzy['Buruk'], harga_fuzzy['Murah']))   # Servis Buruk, Harga Murah => Layak Rendah
-    aturan.append(min(servis_fuzzy['Buruk'], harga_fuzzy['Mahal']))   # Servis Buruk, Harga Mahal => Layak Sangat Rendah
+    aturan = [
+        # Bagus × [Murah, Sedang, Mahal]
+        min(servis_fuzzy['Bagus'], harga_fuzzy['Murah']),   # Aturan 1: Layak Tinggi
+        min(servis_fuzzy['Bagus'], harga_fuzzy['Sedang']),  # Aturan 2: Layak Sedang
+        min(servis_fuzzy['Bagus'], harga_fuzzy['Mahal']),   # Aturan 3: Layak Rendah
+        
+        # Sedang × [Murah, Sedang, Mahal]
+        min(servis_fuzzy['Sedang'], harga_fuzzy['Murah']),  # Aturan 4: Layak Sedang
+        min(servis_fuzzy['Sedang'], harga_fuzzy['Sedang']), # Aturan 5: Layak Sedang
+        min(servis_fuzzy['Sedang'], harga_fuzzy['Mahal']),  # Aturan 6: Layak Rendah
+        
+        # Buruk × [Murah, Sedang, Mahal]
+        min(servis_fuzzy['Buruk'], harga_fuzzy['Murah']),   # Aturan 7: Layak Rendah
+        min(servis_fuzzy['Buruk'], harga_fuzzy['Sedang']),  # Aturan 8: Layak Sangat Rendah
+        min(servis_fuzzy['Buruk'], harga_fuzzy['Mahal'])    # Aturan 9: Layak Sangat Rendah
+    ]
     return aturan
 
 # --- Defuzzification ---
@@ -104,12 +114,23 @@ def defuzzifikasi(aturan):
     Mengubah hasil inferensi fuzzy menjadi skor numerik menggunakan metode Weighted Average (rata-rata terbobot).
     
     Parameter:
-    aturan (list): Nilai kekuatan untuk setiap aturan yang diterapkan.
+    aturan (list): Nilai kekuatan untuk setiap aturan yang diterapkan (9 aturan).
     
     Returns:
     float: Skor kelayakan restoran (0-100).
     """
-    bobot_kelayakan = [90, 80, 60, 80, 60, 40, 60, 60, 40, 20]  # Bobot aturan kelayakan
+    # Bobot untuk setiap aturan (sesuai dengan urutan aturan di atas)
+    bobot_kelayakan = [
+        90,  # Aturan 1: Bagus & Murah → Layak Tinggi
+        70,  # Aturan 2: Bagus & Sedang → Layak Sedang
+        50,  # Aturan 3: Bagus & Mahal → Layak Rendah
+        70,  # Aturan 4: Sedang & Murah → Layak Sedang
+        60,  # Aturan 5: Sedang & Sedang → Layak Sedang
+        40,  # Aturan 6: Sedang & Mahal → Layak Rendah
+        50,  # Aturan 7: Buruk & Murah → Layak Rendah
+        30,  # Aturan 8: Buruk & Sedang → Layak Sangat Rendah
+        20   # Aturan 9: Buruk & Mahal → Layak Sangat Rendah
+    ]
 
     # Hitung rata-rata terbobot
     pembilang = sum(a * b for a, b in zip(aturan, bobot_kelayakan))
